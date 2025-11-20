@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSPranto Tech Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="chat-container">
+        <header>
+            <div class="header-top">
+                <h2>OSPranto Tech</h2>
+                <button class="about-btn" onclick="toggleAbout()">ℹ️ About</button>
+            </div>
+            
+            <div id="room-info">
+                <input type="text" id="roomInput" placeholder="Enter Room Name..." />
+                <button onclick="joinRoom()">Join</button>
+            </div>
+        </header>
+
+        <div id="chat-window" class="chat-window">
+            <div class="welcome-msg">
+                <h3>Welcome to OSPranto Tech Chat!</h3>
+                <p>Create or join a room to start chatting anonymously.</p>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="msgInput" placeholder="Type your message..." disabled>
+            <button id="sendBtn" onclick="sendMessage()" disabled>Send ➤</button>
+        </div>
+    </div>
+
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleAbout()">&times;</span>
+            <h3>About Developer</h3>
+            <p>This project is developed by <strong>OSPranto Tech</strong>.</p>
+            <div class="social-links">
+                <p><strong>Facebook:</strong> <br> <a href="https://www.facebook.com/" target="_blank">Adnan Hasan Pranto</a></p>
+                <p><strong>GitHub:</strong> <br> <a href="https://github.com/" target="_blank">OSPranto Tech</a></p>
+            </div>
+            <p class="footer-note">© 2025 OSPranto Tech. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
