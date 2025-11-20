@@ -33,6 +33,7 @@ const chatInterface = document.getElementById('chat-interface');
 const chatWindow = document.getElementById('chat-window');
 const roomTitleDisplay = document.getElementById('roomTitle');
 const userCountDisplay = document.getElementById('userCount');
+const aboutBtn = document.getElementById('aboutBtn');
 
 // Feature 2: Notification Sound (using a public domain beep sound)
 const notificationSound = new Audio('https://www.soundjay.com/buttons/beep-07.mp3'); 
@@ -49,8 +50,7 @@ function formatTime(timestamp) {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     return hours + ':' + minutes + ' ' + ampm;
 }
-
-// Join Room Function
+// Join Room Function - UPDATED
 window.joinRoom = function() {
     const username = usernameInput.value.trim();
     const roomName = roomInput.value.trim();
@@ -63,7 +63,7 @@ window.joinRoom = function() {
     myUsername = username;
     currentRoom = roomName;
     
-    // UI Update (Shows the main chat interface)
+    // UI Update (Hiding the About/Contact Button)
     document.querySelector('.welcome-msg').style.display = 'none';
     chatInterface.style.display = 'block'; 
     roomTitleDisplay.innerText = `Room: ${currentRoom}`;
@@ -75,6 +75,9 @@ window.joinRoom = function() {
     msgInput.disabled = false;
     sendBtn.disabled = false;
     
+    // Core Fix: Hide the About/Contact button after joining
+    aboutBtn.style.display = 'none'; // <-- CORE FIX
+
     // Clear old messages and load new ones
     chatWindow.innerHTML = ''; 
     loadMessages();
@@ -187,3 +190,4 @@ window.toggleAbout = function() {
         modal.style.display = "flex";
     }
 }
+
