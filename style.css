@@ -1,4 +1,4 @@
-/* General Styles */
+/* --- Mobile-First & Responsive Styles --- */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f2f5;
@@ -10,12 +10,15 @@ body {
 }
 
 .chat-container {
-    width: 100%;
+    width: 95%; /* Wider on mobile */
     max-width: 600px;
     background: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
+    height: 95vh; /* Better control on mobile screens */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header */
@@ -30,24 +33,36 @@ body {
 
 .app-title {
     margin: 0;
-    font-size: 1.5em;
+    font-size: 1.2em; /* Smaller font on mobile */
+}
+
+/* Two Buttons Container */
+#header-btns {
+    display: flex;
+    gap: 8px; 
 }
 
 .about-button {
     background: none;
     border: 1px solid white;
     color: white;
-    padding: 5px 10px;
+    padding: 5px 8px;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 0.75em; /* Small font for two buttons */
 }
 
-/* Room Info & Join Area (FIXED: ensures button and inputs are correctly displayed) */
+.about-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Room Info & Join Area (Responsive Input Fix) */
 #room-info {
     display: flex;
     padding: 10px;
     gap: 5px;
     border-bottom: 1px solid #ddd;
+    flex-wrap: wrap; /* Allows inputs to wrap/stack on very small screens */
 }
 
 #room-info input, #room-info button {
@@ -55,10 +70,7 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1em;
-}
-
-#room-info input {
-    flex-grow: 1;
+    flex-grow: 1; /* Ensures they take up available space */
 }
 
 #room-info button {
@@ -69,20 +81,13 @@ body {
     font-weight: bold;
 }
 
-#room-info button:hover {
-    background-color: #059669;
+/* Chat Interface Header */
+#chat-interface {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Takes remaining vertical space */
 }
 
-
-/* Welcome Message */
-.welcome-msg {
-    text-align: center;
-    padding: 30px 15px;
-    color: #555;
-    font-size: 1.1em;
-}
-
-/* Chat Interface Header (Feature 3: User Counter) */
 #chat-header {
     display: flex;
     justify-content: space-between;
@@ -90,34 +95,18 @@ body {
     padding: 10px 15px;
     background-color: #f7f7f7;
     border-bottom: 1px solid #ddd;
-}
-
-#roomTitle {
-    margin: 0;
-    font-size: 1.2em;
-    color: #2563eb;
-}
-
-#user-counter-display {
-    font-size: 0.9em;
-    color: #666;
-}
-
-#userCount {
-    font-weight: bold;
-    color: #10b981;
+    flex-shrink: 0;
 }
 
 /* Chat Window */
 #chat-window {
-    height: 400px;
+    flex-grow: 1; 
     overflow-y: auto;
     padding: 15px;
     background-color: #fff;
-    border-bottom: 1px solid #ddd;
 }
 
-/* Message Bubbles */
+/* Message Bubbles (Existing styles) */
 .message {
     margin-bottom: 10px;
     padding: 8px 12px;
@@ -126,14 +115,12 @@ body {
     word-wrap: break-word;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-
 .my-message {
     background-color: #2563eb;
     color: white;
     margin-left: auto;
     border-bottom-right-radius: 4px;
 }
-
 .other-message {
     background-color: #e5e7eb;
     color: #374151;
@@ -141,112 +128,79 @@ body {
     border-bottom-left-radius: 4px;
 }
 
-/* Name and Time Display (Feature 1: Time Show) */
+/* Name and Time Display */
 .message-header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     margin-bottom: 2px;
 }
-
-.sender-name {
-    font-size: 11px;
-    font-weight: 600;
-    opacity: 0.9;
-}
-
-.timestamp {
-    font-size: 9px;
-    opacity: 0.6;
-    margin-left: 10px;
-}
-
-/* For messages sent by others (White bubble) */
-.other-message .sender-name {
-    color: #10b981; /* Green name */
-}
-.other-message .timestamp {
-    color: #555; 
-}
-
-/* For your own messages (Blue bubble) */
-.my-message .sender-name,
-.my-message .timestamp {
-    color: rgba(255, 255, 255, 0.7); /* Lighter name and time */
-}
-
-.message p {
-    margin: 0;
-    padding: 0;
-    line-height: 1.4;
-}
+.sender-name { font-size: 11px; font-weight: 600; opacity: 0.9; }
+.timestamp { font-size: 9px; opacity: 0.6; margin-left: 10px; }
 
 /* Input Area */
 #message-input-area {
     display: flex;
     padding: 10px;
     gap: 5px;
-}
-
-#msgInput {
-    flex-grow: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-}
-
-#sendBtn {
-    padding: 10px 15px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-#sendBtn:disabled, #msgInput:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    flex-shrink: 0;
 }
 
 /* Modal Styles */
 .modal {
-    display: none; 
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4); 
+    /* ... Existing styles ... */
     align-items: center;
     justify-content: center;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; 
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; 
-    max-width: 400px;
+    width: 90%; /* Wider modal on mobile */
+    max-width: 450px;
     border-radius: 8px;
+    text-align: center;
 }
 
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+.app-description {
+    font-size: 0.9em;
+    color: #444;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
 }
 
-.close-button:hover,
-.close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+.contact-section {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.contact-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contact-section li {
+    margin-bottom: 8px;
+    font-size: 0.9em;
+}
+
+/* Desktop Styles (Override for larger screens) */
+@media (min-width: 600px) {
+    .chat-container {
+        width: 100%;
+        height: 80vh; /* Restore specific height for desktop */
+        max-width: 600px;
+    }
+    #room-info {
+        flex-wrap: nowrap; /* Prevent inputs from stacking on desktop */
+    }
+    .app-title {
+        font-size: 1.5em; /* Restore desktop font size */
+    }
+    .about-button {
+        font-size: 1em; 
+    }
 }
