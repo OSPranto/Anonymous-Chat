@@ -1,8 +1,8 @@
-// Import Firebase
+// Import Firebase and required functions (Added functions for Time and Presence)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+import { getDatabase, ref, push, onChildAdded, onValue, set, onDisconnect, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-// আপনার অ্যাপের কনফিগারেশন (আপনার দেওয়া তথ্য বসানো আছে)
+// Firebase Configuration (Using your provided config)
 const firebaseConfig = {
   apiKey: "AIzaSyCz6tTqCEU2-Tm2jToKjJ5OACpSbonwXiE",
   authDomain: "anonymous-chat-d6512.firebaseapp.com",
@@ -14,50 +14,76 @@ const firebaseConfig = {
   measurementId: "G-05M7QCFP81"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// নতুন ভেরিয়েবল: ইউজার নাম স্টোর করার জন্য
+// Global Variables
 let currentRoom = "";
-let myID = Math.random().toString(36).substr(2, 9);
-let myUsername = ""; // <-- NEW VARIABLE
+let myID = Math.random().toString(36).substr(2, 9); // Unique ID for this user
+let myUsername = "";
 
-// HTML এলিমেন্ট ধরা
-const usernameInput = document.getElementById('usernameInput'); // <-- NEW ELEMENT
+// HTML Elements
+const usernameInput = document.getElementById('usernameInput');
 const roomInput = document.getElementById('roomInput');
 const msgInput = document.getElementById('msgInput');
 const sendBtn = document.getElementById('sendBtn');
-const chatWindow = document.getElementById('chatWindow');
+const joinBtn = document.getElementById('joinBtn');
+const chatInterface = document.getElementById('chat-interface');
+const chatWindow = document.getElementById('chat-window');
+const roomTitleDisplay = document.getElementById('roomTitle');
+const userCountDisplay = document.getElementById('userCount');
 
-// Join Room Function - UPDATED
+// Feature 2: Notification Sound (using a public domain beep sound)
+const notificationSound = new Audio('https://www.soundjay.com/buttons/beep-07.mp3'); 
+
+// Utility Function: Format Timestamp (Feature 1)
+function formatTime(timestamp) {
+    if (!timestamp) return '';
+    const date = new Date(timestamp);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    return hours + ':' + minutes + ' ' + ampm;
+}
+
+// Join Room Function
 window.joinRoom = function() {
-    const username = usernameInput.value.trim(); // Get Username
+    const username = usernameInput.value.trim();
     const roomName = roomInput.value.trim();
 
-    if (!username) { // Name validation
-        alert("Please enter your name!");
-        return;
-    }
-    if (!roomName) {
-        alert("Please enter a room name!");
+    if (!username || !roomName) {
+        alert("Please enter both your name and a room name!");
         return;
     }
 
-    myUsername = username; // Store Username
+    myUsername = username;
     currentRoom = roomName;
-    document.querySelector('.welcome-msg').style.display = 'none';
     
-    // Disable Room/Name inputs after joining
+    // UI Update (Shows the main chat interface)
+    document.querySelector('.welcome-msg').style.display = 'none';
+    chatInterface.style.display = 'block'; 
+    roomTitleDisplay.innerText = `Room: ${currentRoom}`;
+
+    // Disable inputs
     usernameInput.disabled = true;
     roomInput.disabled = true;
+    joinBtn.disabled = true;
     msgInput.disabled = false;
     sendBtn.disabled = false;
     
-    alert(`Welcome, ${myUsername}! You joined the "${currentRoom}" room.`);
+    // Clear old messages and load new ones
+    chatWindow.innerHTML = ''; 
     loadMessages();
+    
+    // Feature 3: Initialize User Presence
+    setupPresence();
 };
 
-// Send Message Function - UPDATED
+// Send Message Function
 window.sendMessage = function() {
     const msg = msgInput.value.trim();
     if (msg === "") return;
@@ -66,55 +92,91 @@ window.sendMessage = function() {
     push(messagesRef, {
         text: msg,
         senderID: myID,
-        senderName: myUsername, // <-- SENDING NAME
-        timestamp: Date.now()
+        senderName: myUsername,
+        timestamp: serverTimestamp() // Use server timestamp for accuracy
     });
 
-    msgInput.value = ""; 
+    msgInput.value = "";
 };
 
-// Receive Messages Function - UPDATED
+// Message Listener (Load Messages)
 function loadMessages() {
     const messagesRef = ref(db, `chat_rooms/${currentRoom}`);
     
     onChildAdded(messagesRef, (snapshot) => {
         const data = snapshot.val();
-        // Passing the new 'senderName' data
-        displayMessage(data.text, data.senderID, data.senderName); // <-- PASSING NAME
+        // Pass all data including new timestamp and senderName
+        displayMessage(data.text, data.senderID, data.senderName, data.timestamp);
     });
 }
 
-// Display Message on Screen - UPDATED
-function displayMessage(text, senderID, senderName) { // <-- RECEIVING NAME
-    const chatWindow = document.getElementById('chat-window');
-    const div = document.createElement('div');
+// Feature 3: User Counter (Presence Setup)
+function setupPresence() {
+    const roomPresenceRef = ref(db, `room_presence/${currentRoom}/${myID}`);
     
+    // 1. Set what happens when user disconnects (removes them from the list)
+    onDisconnect(roomPresenceRef).remove();
+    
+    // 2. Set user's status to online
+    set(roomPresenceRef, {
+        name: myUsername,
+        timestamp: serverTimestamp()
+    });
+
+    // 3. Listen for changes in the room's presence list (Update Counter)
+    const roomPresenceListRef = ref(db, `room_presence/${currentRoom}`);
+    onValue(roomPresenceListRef, (snapshot) => {
+        // Count how many users are present
+        const count = snapshot.exists() ? snapshot.size : 0;
+        userCountDisplay.innerText = count;
+    });
+}
+
+// Display Message on Screen (Features 1 & 2 Integrated)
+function displayMessage(text, senderID, senderName, timestamp) {
+    const div = document.createElement('div');
     div.classList.add('message');
     
+    // Apply styling based on sender
     if (senderID === myID) {
         div.classList.add('my-message');
     } else {
         div.classList.add('other-message');
+        // Feature 2: Play sound for incoming messages
+        notificationSound.play();
     }
     
-    // Create the name element
+    // Create the header div for Name and Time (Feature 1)
+    const headerDiv = document.createElement('div');
+    headerDiv.classList.add('message-header');
+
+    // Name 
     const nameSpan = document.createElement('span');
     nameSpan.classList.add('sender-name');
-    nameSpan.innerText = senderName; // Set the name
-    
-    // Create the text element
+    nameSpan.innerText = senderName;
+
+    // Time (Feature 1)
+    const timeSpan = document.createElement('span');
+    timeSpan.classList.add('timestamp');
+    timeSpan.innerText = formatTime(timestamp); 
+
+    // Message Content
     const textP = document.createElement('p');
     textP.innerText = text;
 
-    // Append Name and Text to the message div
-    div.appendChild(nameSpan);
+    // Assemble the message bubble
+    headerDiv.appendChild(nameSpan);
+    headerDiv.appendChild(timeSpan);
+    div.appendChild(headerDiv);
     div.appendChild(textP);
 
     chatWindow.appendChild(div);
+    
+    // Auto Scroll
     chatWindow.scrollTop = chatWindow.scrollHeight;
 }
 
-// Function to toggle the About Modal (Unchanged)
+// About button function
 window.toggleAbout = function() {
     const modal = document.getElementById('aboutModal');
     const currentDisplay = window.getComputedStyle(modal).display;
