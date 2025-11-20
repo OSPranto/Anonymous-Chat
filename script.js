@@ -12,7 +12,8 @@ const firebaseConfig = {
     measurementId: "G-05M7QCFP81"
 };
 
-// Initialize Firebase (Uses the globally loaded Firebase object)
+// Initialize Firebase (Uses the globally loaded Firebase object from index.html)
+// Note: This requires <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script> in HTML
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const serverTimestamp = firebase.database.ServerValue.TIMESTAMP;
@@ -72,17 +73,17 @@ window.joinRoom = function() {
     
     // UI Update 
     document.querySelector('.welcome-msg').style.display = 'none';
-    chatInterface.style.display = 'flex'; 
+    chatInterface.style.display = 'flex'; // FIX: Ensures chat interface is visible
     roomTitleDisplay.innerText = `Room: ${currentRoom}`;
 
     // Disable/Enable Inputs
     usernameInput.disabled = true;
     roomInput.disabled = true;
     joinBtn.disabled = true;
-    msgInput.disabled = false;
-    sendBtn.disabled = false;
+    msgInput.disabled = false; // FIX: Enables the message input box
+    sendBtn.disabled = false; // FIX: Enables the send button
     
-    // Fix: Hide both buttons after joining
+    // Hide About/Contact buttons after joining
     aboutBtn.style.display = 'none';
     contactBtn.style.display = 'none'; 
 
@@ -123,12 +124,11 @@ window.toggleContact = function() {
 
 
 // ----------------------------------------------------
-// EVENT LISTENERS & BACKGROUND LOGIC
+// BACKGROUND LOGIC
 // ----------------------------------------------------
 
 function loadMessages() {
     const messagesRef = db.ref(`chat_rooms/${currentRoom}`);
-    
     messagesRef.on('child_added', (snapshot) => {
         const data = snapshot.val();
         displayMessage(data.text, data.senderID, data.senderName, data.timestamp);
@@ -137,9 +137,7 @@ function loadMessages() {
 
 function setupPresence() {
     const roomPresenceRef = db.ref(`room_presence/${currentRoom}/${myID}`);
-    
     roomPresenceRef.onDisconnect().remove();
-    
     roomPresenceRef.set({
         name: myUsername,
         timestamp: serverTimestamp
@@ -187,8 +185,9 @@ function displayMessage(text, senderID, senderName, timestamp) {
 }
 
 
-// NEW FEATURE: Send message using Enter key
+// NEW FEATURE FIX: Send message using Enter key
 msgInput.addEventListener('keypress', function (e) {
+    // Check if the input is enabled and the key pressed is Enter
     if (!msgInput.disabled && e.key === 'Enter') {
         e.preventDefault(); 
         window.sendMessage();
