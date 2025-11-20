@@ -1,15 +1,8 @@
-// Import Firebase
+// ব্রাউজারের জন্য Firebase ইমপোর্ট (CDN Links)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// আপনার অ্যাপের কনফিগারেশন (আপনার দেওয়া তথ্য বসানো হয়েছে)
 const firebaseConfig = {
   apiKey: "AIzaSyCz6tTqCEU2-Tm2jToKjJ5OACpSbonwXiE",
   authDomain: "anonymous-chat-d6512.firebaseapp.com",
@@ -21,19 +14,21 @@ const firebaseConfig = {
   measurementId: "G-05M7QCFP81"
 };
 
-// Initialize App
+// অ্যাপ এবং ডেটাবেস চালু করা
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+// ভেরিয়েবল ডিক্লেয়ারেশন
 let currentRoom = "";
 let myID = Math.random().toString(36).substr(2, 9); 
 
+// HTML এলিমেন্ট ধরা
 const roomInput = document.getElementById('roomInput');
 const msgInput = document.getElementById('msgInput');
 const sendBtn = document.getElementById('sendBtn');
 const chatWindow = document.getElementById('chatWindow');
 
-// Join Room Function
+// জয়েন বাটন ফাংশন
 window.joinRoom = function() {
     const roomName = roomInput.value.trim();
     if (!roomName) {
@@ -44,15 +39,18 @@ window.joinRoom = function() {
     currentRoom = roomName;
     document.querySelector('.welcome-msg').style.display = 'none';
     
+    // ইনপুট বক্স সচল করা
     msgInput.disabled = false;
     sendBtn.disabled = false;
     roomInput.disabled = true;
     
     alert(`You joined the "${currentRoom}" room!`);
+    
+    // মেসেজ লোড শুরু করা
     loadMessages();
 };
 
-// Send Message Function
+// মেসেজ সেন্ড ফাংশন
 window.sendMessage = function() {
     const msg = msgInput.value.trim();
     if (msg === "") return;
@@ -64,10 +62,10 @@ window.sendMessage = function() {
         timestamp: Date.now()
     });
 
-    msgInput.value = ""; 
+    msgInput.value = ""; // ইনপুট ক্লিয়ার
 };
 
-// Receive Messages Function
+// মেসেজ রিসিভ ফাংশন
 function loadMessages() {
     const messagesRef = ref(db, `chat_rooms/${currentRoom}`);
     
@@ -77,7 +75,7 @@ function loadMessages() {
     });
 }
 
-// Display Message on Screen
+// স্ক্রিনে মেসেজ দেখানো
 function displayMessage(text, senderID) {
     const chatWindow = document.getElementById('chat-window');
     const div = document.createElement('div');
@@ -92,13 +90,17 @@ function displayMessage(text, senderID) {
     
     div.innerText = text;
     chatWindow.appendChild(div);
+    
+    // অটো স্ক্রল
     chatWindow.scrollTop = chatWindow.scrollHeight;
 }
 
-// NEW: Function to toggle the About Modal
+// About বাটন টগল করার ফাংশন
 window.toggleAbout = function() {
     const modal = document.getElementById('aboutModal');
-    if (modal.style.display === "flex") {
+    const currentDisplay = window.getComputedStyle(modal).display;
+    
+    if (currentDisplay === "flex") {
         modal.style.display = "none";
     } else {
         modal.style.display = "flex";
