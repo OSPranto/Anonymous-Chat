@@ -181,4 +181,32 @@ button:disabled, input:disabled {
 @keyframes fadeIn {
     from {opacity: 0;}
     to {opacity: 1;}
+
+}
+
+/* --- Name Display Styles --- */
+
+.sender-name {
+    display: block; /* Name takes up full width */
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    opacity: 0.85;
+}
+
+/* For messages sent by others (White bubble) */
+.other-message .sender-name {
+    color: #2563eb; /* Blue name */
+}
+
+/* For your own messages (Blue bubble) */
+.my-message .sender-name {
+    color: rgba(255, 255, 255, 0.7); /* Lighter name */
+}
+
+/* Adjust the message content padding slightly to fit the name better */
+.message p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
 }
