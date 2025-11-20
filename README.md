@@ -1,3 +1,70 @@
-OSPranto Tech Real-time Chat Application 💬A modern, real-time chat application demonstrating the power of Firebase for instant, room-based communication. This project is built as a portfolio showcase by OSPranto Tech to highlight proficiency in front-end development and serverless database integration.🌟 Key FeaturesInstant Messaging: Real-time data synchronization using Firebase Realtime Database.Room-Based Chat: Users can create or join unique chat rooms instantly by simply typing a room name.User Presence: Shows the number of users currently active in a specific room.Mobile-First Design: Fully responsive layout ensures a perfect user experience on any device (desktop, tablet, or mobile).Enter Key Functionality: Seamless message sending via the Enter key within the chat interface.Branding & Contact: Dedicated About and Contact sections featuring OSPranto Tech and the developer's information.🛠️ Technologies UsedTechnologyPurposeHTML5 & CSS3Structure and responsive styling (Mobile-First Approach).JavaScript (ES6+)Core application logic and DOM manipulation.Firebase Realtime DBBackend for real-time message storage and synchronization.Firebase PresenceTracking online users within rooms.🚀 Setup & InstallationTo run this project locally, follow these simple steps:Clone the repository:Bashgit clone https://github.com/YourUsername/repository-name.git
+💬 OSPranto Tech Real-time Chat Application
+
+A modern, real-time chat application demonstrating the power of **Firebase** for instant, room-based communication. This project is a portfolio showcase by **OSPranto Tech** to highlight proficiency in front-end development and serverless database integration.
+
+-----
+
+## ✨ Core Features
+
+  * **Instant Messaging:** Real-time data synchronization using **Firebase Realtime Database**.
+  * **Room-Based Chat:** Users can create or join unique chat rooms instantly by simply typing a room name.
+  * **User Presence:** Shows the number of users currently active in a specific room.
+  * **Mobile-First Design:** Fully **responsive** layout ensures a perfect user experience on any device (desktop, tablet, or mobile).
+  * **Intuitive UI:** Dedicated, separate **About** and **Contact** sections for easy access to project info and developer details.
+  * **Seamless Input:** Message sending via the **Enter** key within the chat interface.
+
+-----
+
+## 🛠️ Technology Stack
+
+| Category | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Backend/DB** | **Firebase Realtime Database** | Real-time message storage, synchronization, and presence tracking. |
+| **Frontend** | **HTML5 & CSS3** | Structure and responsive layout styling (Flexbox/Media Queries). |
+| **Logic** | **JavaScript (Vanilla JS)** | Core application logic and DOM manipulation. |
+| **Deployment** | (Suggest adding Vercel or Netlify) | (Suggest adding Vercel or Netlify) |
+
+-----
+
+## 🚀 Setup & Installation
+
+To run this project locally, follow these simple steps:
+
+### 1\. Repository Cloning
+
+Clone the project to your local machine:
+
+```bash
+git clone https://github.com/YourUsername/repository-name.git
 cd repository-name
-Add Firebase Configuration:Create a Firebase project in the Firebase Console.Enable Realtime Database.Get your Firebase configuration object.Update the firebaseConfig variable in the script.js file with your credentials.Run Locally:Open index.html in your web browser.🔗 Connect with the Developer (OSPranto Tech)This project is a creation of Adnan Hasan Pranto. Feel free to connect for feedback, collaborations, or other tech inquiries.PlatformHandleLinkEmailOSPranto.Official@gmail.commailto:OSPranto.Official@gmail.comGitHubOSPranto Techhttps://github.com/OSPrantoTechFacebookAdnan Hasan Prantohttps://www.facebook.com/AdnanHasanPrantoTelegram@MrMysteryMoonhttps://t.me/MrMysteryMoon
+```
+
+### 2\. Firebase Configuration
+
+The app requires Firebase Realtime Database enabled.
+
+1.  Create a project in the **Firebase Console**.
+2.  Enable **Realtime Database**.
+3.  Get your Firebase configuration object (API Key, Project ID, etc.).
+4.  Open the **`script.js`** file and update the `firebaseConfig` object with your credentials.
+
+### 3\. Local Run
+
+Open **`index.html`** directly in your web browser to start the application.
+
+-----
+
+## 👨‍💻 Connect with the Developer (OSPranto Tech)
+
+This project is a creation of **Adnan Hasan Pranto**. Feel free to connect for feedback, collaborations, or other tech inquiries.
+
+| Platform | Contact Details |
+| :--- | :--- |
+| **Email** | `OSPranto.Official@gmail.com` |
+| **GitHub** | [OSPranto Tech](https://www.google.com/search?q=https://github.com/OSPrantoTech) |
+| **Facebook** | [Adnan Hasan Pranto](https://www.google.com/search?q=https://www.facebook.com/AdnanHasanPranto) |
+| **Telegram** | `@MrMysteryMoon` |
+
+-----
+
+> 🌐 **Developed and Maintained by OSPranto Tech**
