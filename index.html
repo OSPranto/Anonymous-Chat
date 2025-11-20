@@ -3,54 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSPranto Tech Chat</title>
+    <title>Named Real-time Chat</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="chat-container">
-        <header>
-            <div class="header-top">
-                <h2>OSPranto Tech</h2>
-                <button class="about-btn" onclick="toggleAbout()">ℹ️ About</button>
-            </div>
-            
-           <div id="room-info">
-    <input type="text" id="usernameInput" placeholder="Your Name" required /> 
-    <input type="text" id="roomInput" placeholder="Room Name (e.g. lounge)" required />
-    <button onclick="joinRoom()">Join</button>
-</div>
+
+        <header class="chat-header">
+            <h1 class="app-title">Named Real-time Chat App</h1>
+            <button class="about-button" onclick="toggleAbout()">About</button>
         </header>
+        
+        <div id="room-info">
+            <input type="text" id="usernameInput" placeholder="Your Name" required /> 
+            <input type="text" id="roomInput" placeholder="Room Name (e.g. lounge)" required />
+            <button onclick="joinRoom()" id="joinBtn">Join</button> 
+        </div>
 
-        <div id="chat-window" class="chat-window">
-            <div class="welcome-msg">
-                <h3>Welcome to OSPranto Tech Chat!</h3>
-                <p>Create or join a room to start chatting anonymously.</p>
+        <div class="welcome-msg">
+            <p>Enter your name and a room name to start chatting!</p>
+        </div>
+
+        <div id="chat-interface" style="display: none;">
+            <div id="chat-header">
+                <h3 id="roomTitle"></h3>
+                <span id="user-counter-display">Users Online: <span id="userCount">0</span></span>
+            </div>
+            <div id="chat-window">
+                </div>
+            <div id="message-input-area">
+                <input type="text" id="msgInput" placeholder="Type your message..." disabled>
+                <button onclick="sendMessage()" id="sendBtn" disabled>Send</button>
             </div>
         </div>
 
-        <div class="input-area">
-            <input type="text" id="msgInput" placeholder="Type your message..." disabled>
-            <button id="sendBtn" onclick="sendMessage()" disabled>Send ➤</button>
-        </div>
     </div>
 
-    <div id="aboutModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="toggleAbout()">&times;</span>
-            <h3>About Developer</h3>
-            <p>This project is developed by <strong>OSPranto Tech</strong>.</p>
-            <div class="social-links">
-                <p><strong>Facebook:</strong> <br> <a href="https://www.facebook.com/OSPranto.Official" target="_blank">Adnan Hasan Pranto</a></p>
-                <p><strong>GitHub:</strong> <br> <a href="https://github.com/OSPranto" target="_blank">OSPranto Tech</a></p>
-            </div>
-            <p class="footer-note">© 2025 OSPranto Tech. All rights reserved.</p>
+    <div id="aboutModal" class="modal" onclick="toggleAbout()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-button" onclick="toggleAbout()">&times;</span>
+            <h2>About This App</h2>
+            <p>This is a simple real-time chat application built with Firebase Realtime Database. Your chats are stored on the database and updated instantly for everyone in the same room.</p>
         </div>
     </div>
-
+    
     <script type="module" src="script.js"></script>
 </body>
-
 </html>
-
